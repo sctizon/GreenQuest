@@ -17,6 +17,7 @@ export default function CreateEventTab() {
   const [dateTime, setDateTime] = useState(new Date()); // Unified date and time picker
   const [maxSpots, setMaxSpots] = useState('');
   const [contact, setContact] = useState('');
+  const [userId, setUserId] = useState(0);
 
   // Automatically populate the creator name from the session
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function CreateEventTab() {
     if (session && typeof session === 'object' && 'user' in session) {
       setCreatorName(session.user.fullName);
       setContact(session.user.email);
+      setUserId(session.user.userId);
     }
     console.log(session)
   }, [session]);
@@ -47,7 +49,7 @@ export default function CreateEventTab() {
   };  
 
   const createEvent = async () => {
-    if (!creatorName || !eventName || !location || !dateTime || !maxSpots || !contact) {
+    if (!creatorName || !eventName || !location || !dateTime || !maxSpots || !contact || !userId) {
         alert('All fields are required');
         return;
     }
@@ -59,6 +61,7 @@ export default function CreateEventTab() {
     formData.append('dateTime', new Date(dateTime).toISOString());
     formData.append('maxSpots', maxSpots);
     formData.append('contact', contact);
+    formData.append('userId', String(userId));
 
     if (image) {
         // Convert the image to a blob-compatible object

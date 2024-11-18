@@ -2,31 +2,46 @@ import { Request, Response } from 'express';
 import prisma from '../prisma/prismaClient';
 
 // Create an Event
-export const createEvent = async (req: Request, res: Response): Promise<void> => {
-  const { creatorName, eventName, location, dateTime, maxSpots, contact } = req.body;
-
-  if (!creatorName || !eventName || !location || !dateTime || !maxSpots || !contact) {
-    res.status(400).json({ error: 'Missing required fields' });
-    return;
-  }
-
+export const createEvent = async (req: Request, res: Response) => {
   try {
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
-    const newEvent = await prisma.event.create({
+    const {
+      creatorName,
+      eventName,
+      location,
+      dateTime,
+      maxSpots,
+      contact,
+      image,
+      userId, // Ensure this is passed in the request body
+    } = req.body;
+
+    if (!userId) {
+      res.status(400).json({ message: 'User ID is required to create an event.' });
+      return;
+    }
+
+    const numericUserId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
+
+    // Create a new event with the required user relation
+    const event = await prisma.event.create({
       data: {
         creatorName,
         eventName,
         location,
         dateTime: new Date(dateTime),
-        maxSpots: parseInt(maxSpots, 10),
+        maxSpots: Number(maxSpots),
         contact,
-        image: imageUrl,
+        image: image || null,
+        user: {
+          connect: { id: numericUserId }, // Connect the event to the user
+        },
       },
     });
-    res.status(201).json(newEvent);
+
+    res.status(201).json({ message: 'Event created successfully', event });
   } catch (error) {
     console.error('Error creating event:', error);
-    res.status(500).json({ error: 'Failed to create event' });
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
 

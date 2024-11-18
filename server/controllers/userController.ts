@@ -97,6 +97,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
         message: 'Login successful',
         token,
         user: {
+          userId: user.id,
           email: user.email,
           fullName: user.fullName, // Include the user's full name
         },
@@ -105,4 +106,56 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       console.error('Error logging in user:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
+};
+
+export const getUserProfile = async (req: Request, res: Response): Promise<void> => {
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    res.status(401).json({ message: 'Unauthorized: No token provided.' });
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret-key');
+    console.log('Decoded token:', decoded);
+
+    const userId = (decoded as { userId: number }).userId;
+    console.log('Extracted userId:', userId);
+
+    if (!userId) {
+      res.status(401).json({ message: 'Unauthorized: Invalid token.' });
+      return;
+    }
+
+    // Fetch user data from the database
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found.' });
+      return;
+    }
+
+    // Fetch events created by the user using `userId`
+    const eventsCreatedCount = await prisma.event.count({
+      where: { userId }, // Directly filter by `userId`
+    });
+
+    // Fetch events the user participated in using the `Participant` table
+    const eventsParticipatedCount = await prisma.participant.count({
+      where: { userId }, // Directly filter by `userId` in the `Participant` model
+    });
+    
+    res.status(200).json({
+      fullName: user.fullName,
+      email: user.email,
+      eventsCreated: eventsCreatedCount,
+      eventsParticipated: eventsParticipatedCount,
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
 };

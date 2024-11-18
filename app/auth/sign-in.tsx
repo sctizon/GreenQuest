@@ -39,6 +39,7 @@ export default function LoginScreen() {
       signIn({
         token: data.token,
         user: {
+          userId: data.user.userId,
           email: data.user.email,
           fullName: data.user.fullName,
         },
@@ -58,7 +59,7 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       {/* Back Button */}
-      <TouchableOpacity style={styles.backButton}>
+      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/')}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 

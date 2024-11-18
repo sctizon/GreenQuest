@@ -4,15 +4,16 @@ import { useStorageState } from '../utils/useStorageState';
 interface Session {
     token: string;
     user: {
-      email: string;
-      fullName: string;
+        userId: number;
+        email: string;
+        fullName: string;
     };
 }
   
 const AuthContext = createContext<{
     session?: Session | null;
     isLoading: boolean;
-    signIn: (data: { token: string; user: { fullName: string; email: string } }) => void;
+    signIn: (data: { token: string; user: { userId: number; fullName: string; email: string } }) => void;
     signOut: () => void;
 } | undefined>(undefined);
   
@@ -27,7 +28,7 @@ export function useSession() {
 export function SessionProvider({ children }: PropsWithChildren) {
     const [[isLoading, session], setSession] = useStorageState<Session | null>('session');
   
-    const signIn = async (data: { token: string; user: { email: string; fullName: string  } }) => {
+    const signIn = async (data: { token: string; user: { userId: number; email: string; fullName: string  } }) => {
       try {
         setSession(data); // Store token and user info
       } catch (error) {

@@ -20,18 +20,21 @@ model User {
   email     String   @unique
   password  String
   participants Participant[] // One-to-many relation with Participant
+  createdEvents Event[]    @relation("UserCreatedEvents")
   createdAt DateTime @default(now())
 }
 
 model Event {
   id          Int      @id @default(autoincrement())
-  creatorName String
+  userId      Int          // Foreign key to User
+  creatorName String       // Full name of the user (for display purposes)
   eventName   String
   location    String
   image       String?  // Make image optional by adding "?"
   dateTime    DateTime
   maxSpots    Int
   contact     String
+  user        User         @relation("UserCreatedEvents", fields: [userId], references: [id])
   participants Participant[]
 }
 
