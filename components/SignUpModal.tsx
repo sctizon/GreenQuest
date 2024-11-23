@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, Modal, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons'; // Import Ionicons
+import Ionicons from "@expo/vector-icons/Ionicons"; // Import Ionicons
+import React, { useState } from "react";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 interface SignUpModalProps {
   visible: boolean;
@@ -9,20 +16,25 @@ interface SignUpModalProps {
   onSubmit: (name: string, email: string, phone: string) => void; // Function to handle form submission
 }
 
-export const SignUpModal: React.FC<SignUpModalProps> = ({ visible, eventName, onClose, onSubmit }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+export const SignUpModal: React.FC<SignUpModalProps> = ({
+  visible,
+  eventName,
+  onClose,
+  onSubmit,
+}) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleSubmit = () => {
     if (!name || !email || !phone) {
-      alert('Please fill out all fields');
+      alert("Please fill out all fields");
       return;
     }
     onSubmit(name, email, phone);
-    setName('');
-    setEmail('');
-    setPhone('');
+    setName("");
+    setEmail("");
+    setPhone("");
   };
 
   return (
@@ -65,54 +77,54 @@ export const SignUpModal: React.FC<SignUpModalProps> = ({ visible, eventName, on
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContent: {
-    width: '90%',
-    backgroundColor: '#fff', // White background
+    width: "90%",
+    backgroundColor: "#fff", // White background
     borderRadius: 8,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 5,
-    position: 'relative', // Needed for the close button
+    position: "relative", // Needed for the close button
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     right: 8,
     width: 30,
     height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 100,
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
     padding: 8,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
   },
   submitButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: "#007BFF",
     padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   submitButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

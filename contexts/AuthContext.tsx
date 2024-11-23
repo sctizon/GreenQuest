@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -18,13 +18,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const loadToken = async () => {
       try {
-        const storedToken = await SecureStore.getItemAsync('authToken');
+        const storedToken = await SecureStore.getItemAsync("authToken");
         if (storedToken) {
-          console.log('Token loaded:', storedToken);
+          console.log("Token loaded:", storedToken);
           setIsAuthenticated(true); // User is authenticated if a token exists
         }
       } catch (error) {
-        console.error('Error loading token:', error);
+        console.error("Error loading token:", error);
       } finally {
         setLoading(false); // Finished loading
       }
@@ -36,22 +36,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (token: string) => {
     try {
       // Save the token directly (assuming it's already a string)
-      await SecureStore.setItemAsync('authToken', token);
-      console.log('Token saved:', JSON.stringify(token));
+      await SecureStore.setItemAsync("authToken", token);
+      console.log("Token saved:", JSON.stringify(token));
       setIsAuthenticated(true);
     } catch (error) {
-      console.error('Error saving token:', error);
+      console.error("Error saving token:", error);
     }
   };
 
   // Logout: Remove the token and reset authentication state
   const logout = async () => {
     try {
-      await SecureStore.deleteItemAsync('authToken'); // Remove token
-      console.log('Token removed');
+      await SecureStore.deleteItemAsync("authToken"); // Remove token
+      console.log("Token removed");
       setIsAuthenticated(false); // Reset authentication state
     } catch (error) {
-      console.error('Error deleting token:', error);
+      console.error("Error deleting token:", error);
     }
   };
 
@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

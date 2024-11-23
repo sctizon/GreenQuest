@@ -1,55 +1,55 @@
-import React, { useState } from 'react';
+import Ionicons from "@expo/vector-icons/Ionicons"; // For icons
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
-  View,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons'; // For icons
-import { useRouter } from 'expo-router';
-import { API_URL } from '../../constants/constants';
+  View,
+} from "react-native";
+import { API_URL } from "../../constants/constants";
 // import { useAuth } from '../../contexts/AuthContext'; // Import AuthContext
-import { useSession } from '@/contexts/ctx';
+import { useSession } from "@/contexts/ctx";
 
 export default function LoginScreen() {
   const router = useRouter();
   // const { login } = useAuth(); // Use AuthContext
   const { signIn } = useSession();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
     if (!email || !password) {
-      alert('Error: Please fill out all fields.');
+      alert("Error: Please fill out all fields.");
       return;
     }
 
     try {
       const response = await fetch(`${API_URL}/users/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
       if (response.ok) {
         const data = await response.json(); // Get token and user info from API
 
-      // Use the signIn function from context
-      signIn({
-        token: data.token,
-        user: {
-          userId: data.user.userId,
-          email: data.user.email,
-          fullName: data.user.fullName,
-        },
-      });
+        // Use the signIn function from context
+        signIn({
+          token: data.token,
+          user: {
+            userId: data.user.userId,
+            email: data.user.email,
+            fullName: data.user.fullName,
+          },
+        });
 
-      // Redirect to home after successful login
-      router.replace('/home');
+        // Redirect to home after successful login
+        router.replace("/home");
       } else {
         const error = await response.json();
-        alert(error.message || 'Login failed');
+        alert(error.message || "Login failed");
       }
     } catch (error: any) {
       console.log(error.message);
@@ -59,7 +59,10 @@ export default function LoginScreen() {
   return (
     <View style={styles.container}>
       {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/')}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => router.push("/")}
+      >
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
 
@@ -81,7 +84,12 @@ export default function LoginScreen() {
 
       {/* Password Input */}
       <View style={styles.inputContainer}>
-        <Ionicons name="lock-closed" size={20} color="black" style={styles.icon} />
+        <Ionicons
+          name="lock-closed"
+          size={20}
+          color="black"
+          style={styles.icon}
+        />
         <TextInput
           style={styles.input}
           placeholder="Password"
@@ -104,8 +112,7 @@ export default function LoginScreen() {
 
       {/* Sign Up Link */}
       <Text style={styles.signupText}>
-        Don’t have an account?{' '}
-        <Text style={styles.signupLink}>SIGN UP</Text>
+        Don’t have an account? <Text style={styles.signupLink}>SIGN UP</Text>
       </Text>
     </View>
   );
@@ -114,18 +121,18 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAF8E6', // Light green background
+    backgroundColor: "#EAF8E6", // Light green background
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderRadius: 15,
     padding: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -133,26 +140,26 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#000',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#000",
+    textAlign: "center",
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
-    color: '#000',
-    textAlign: 'center',
+    color: "#000",
+    textAlign: "center",
     marginBottom: 32,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
     paddingHorizontal: 10,
     paddingVertical: 12,
     marginBottom: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -164,24 +171,24 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   forgotPassword: {
-    textAlign: 'right',
-    color: '#000',
+    textAlign: "right",
+    color: "#000",
     fontSize: 14,
     marginBottom: 20,
   },
   loginButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#2E7D32',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#2E7D32",
     borderRadius: 25,
     paddingVertical: 12,
     paddingHorizontal: 20,
     marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -189,17 +196,17 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontWeight: "bold",
+    color: "#FFFFFF",
     marginRight: 8,
   },
   signupText: {
-    textAlign: 'center',
-    color: '#555',
+    textAlign: "center",
+    color: "#555",
     fontSize: 14,
   },
   signupLink: {
-    color: '#2E7D32',
-    fontWeight: 'bold',
+    color: "#2E7D32",
+    fontWeight: "bold",
   },
 });

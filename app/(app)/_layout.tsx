@@ -1,13 +1,11 @@
-import { Text } from 'react-native';
-import { Redirect, Stack } from 'expo-router';
-import { useSession } from '../../contexts/ctx';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'; // For icons
-import { View } from 'react-native';
-import { useRouter } from 'expo-router';
-import HomeTab from './home';
-import CreateEventTab from './create';
-import ProfileTab from './profile';
+import { Ionicons } from "@expo/vector-icons"; // For icons
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Redirect } from "expo-router";
+import { Text } from "react-native";
+import { useSession } from "../../contexts/ctx";
+import CreateEventTab from "./create";
+import HomeTab from "./home";
+import ProfileTab from "./profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,24 +32,24 @@ export default function AppLayout() {
         tabBarIcon: ({ color, size }) => {
           let iconName;
 
-          if (route.name === 'home') {
-            iconName = 'home';
-          } else if (route.name === 'create') {
-            iconName = 'add-circle';
-          } else if (route.name === 'profile') {
-            iconName = 'person';
+          if (route.name === "home") {
+            iconName = "home";
+          } else if (route.name === "create") {
+            iconName = "add-circle";
+          } else if (route.name === "profile") {
+            iconName = "person";
           }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName as any} size={size} color={color} />;
         },
         tabBarShowLabel: false,
-        tabBarActiveTintColor: '#2E7D32', // Green for active tabs
-        tabBarInactiveTintColor: 'gray', // Gray for inactive tabs
+        tabBarActiveTintColor: "#2E7D32", // Green for active tabs
+        tabBarInactiveTintColor: "gray", // Gray for inactive tabs
         tabBarStyle: {
-          backgroundColor: '#FFFFFF', // White background
+          backgroundColor: "#FFFFFF", // White background
           height: 60,
           borderTopWidth: 1,
-          borderTopColor: '#E0E0E0', // Light gray border
+          borderTopColor: "#E0E0E0", // Light gray border
         },
         headerShown: false, // Hide headers for each screen
       })}

@@ -150,8 +150,7 @@ export default function HomeTab() {
               {/* Available Spots */}
               <View style={styles.row}>
                 <Text style={styles.label}>
-                  Spots Left: {item.maxSpots - item.participants.length}/
-                  {item.maxSpots}
+                  Spots Left: {item.maxSpots}/{item.maxSpots}
                 </Text>
               </View>
 

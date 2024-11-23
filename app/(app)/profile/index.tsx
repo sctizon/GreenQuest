@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Modal, Dimensions } from 'react-native';
-import { useSession } from '../../../contexts/ctx';
-import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import { useRouter } from 'expo-router';
-import { API_URL } from '@/constants/constants';
+import { API_URL } from "@/constants/constants";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  Dimensions,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useSession } from "../../../contexts/ctx";
 
 export default function ProfilePage() {
   const { session } = useSession(); // Access the user's session
@@ -26,7 +35,7 @@ export default function ProfilePage() {
   const handleLogout = () => {
     setLogoutModalVisible(false);
     signOut(); // Clear the session
-    router.replace('/auth/sign-in'); // Redirect to sign-in page
+    router.replace("/auth/sign-in"); // Redirect to sign-in page
   };
 
   useEffect(() => {
@@ -38,22 +47,22 @@ export default function ProfilePage() {
               Authorization: `Bearer ${session.token}`,
             },
           });
-  
+
           if (response.ok) {
             const data = await response.json();
-            console.log('Fetched Profile Data:', data); // Debug log
+            console.log("Fetched Profile Data:", data); // Debug log
             setProfileData(data);
           } else {
-            console.error('Failed to fetch user data');
+            console.error("Failed to fetch user data");
           }
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error("Error fetching user data:", error);
       }
     };
-  
+
     fetchUserData();
-    console.log("events created", profileData.eventsCreated)
+    console.log("events created", profileData.eventsCreated);
   }, [session]);
 
   return (
@@ -63,35 +72,37 @@ export default function ProfilePage() {
         <View style={styles.profilePictureContainer}>
           <Image
             source={{
-              uri: 'https://via.placeholder.com/100', // Replace with actual profile picture URL
+              uri: "https://via.placeholder.com/100", // Replace with actual profile picture URL
             }}
             style={styles.profilePicture}
           />
         </View>
-        <Text style={styles.username}>{session?.user?.fullName || 'Username'}</Text>
-        <TouchableOpacity 
-            style={styles.optionsButton}
-            onPress={() => setMenuVisible((prev) => !prev)} // Toggle menu visibility
+        <Text style={styles.username}>
+          {session?.user?.fullName || "Username"}
+        </Text>
+        <TouchableOpacity
+          style={styles.optionsButton}
+          onPress={() => setMenuVisible((prev) => !prev)} // Toggle menu visibility
         >
-            <SimpleLineIcons name="options-vertical" size={24} color="#2E7D32" />
+          <SimpleLineIcons name="options-vertical" size={24} color="#2E7D32" />
         </TouchableOpacity>
 
         {/* Dropdown Menu */}
         {menuVisible && (
-            <View style={styles.menu}>
-                <TouchableOpacity
-                    style={styles.menuItem}
-                    // onPress={handleViewPersonalData}
-                >
-                    <Text style={styles.menuItemText}>Personal Data</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.menuItem, styles.logoutItem]}
-                    onPress={confirmLogout}
-                >
-                    <Text style={styles.logoutText}>Logout</Text>
-                </TouchableOpacity>
-            </View>
+          <View style={styles.menu}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              // onPress={handleViewPersonalData}
+            >
+              <Text style={styles.menuItemText}>Personal Data</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.menuItem, styles.logoutItem]}
+              onPress={confirmLogout}
+            >
+              <Text style={styles.logoutText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
         )}
       </View>
 
@@ -182,69 +193,69 @@ export default function ProfilePage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#EAF8E6', // Light green background
+    backgroundColor: "#EAF8E6", // Light green background
   },
   profileHeader: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 10,
   },
   profilePictureContainer: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     marginTop: 20,
     marginBottom: 10,
-    shadowColor: '#000', // Shadow effect
+    shadowColor: "#000", // Shadow effect
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
   },
   profilePicture: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   username: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#222',
+    fontWeight: "bold",
+    color: "#222",
   },
   optionsButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     top: 10,
   },
   optionsText: {
     fontSize: 18,
-    color: '#222',
+    color: "#222",
   },
   statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginVertical: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     marginHorizontal: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 2,
   },
   statItem: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   statValue: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2E7D32',
+    fontWeight: "bold",
+    color: "#2E7D32",
   },
   statLabel: {
     fontSize: 14,
-    color: '#222',
+    color: "#222",
   },
   section: {
     marginHorizontal: 20,
@@ -252,49 +263,49 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
-    color: '#222',
+    color: "#222",
   },
   badgesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
   },
   badge: {
     width: 60,
     height: 60,
     marginBottom: 10,
     borderRadius: 8,
-    backgroundColor: '#ccc', // Placeholder color
+    backgroundColor: "#ccc", // Placeholder color
   },
   noDataText: {
     fontSize: 14,
-    color: '#555',
-    textAlign: 'center',
+    color: "#555",
+    textAlign: "center",
   },
   prizeItem: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 2,
   },
   prizeText: {
     fontSize: 16,
-    color: '#222',
+    color: "#222",
   },
   menu: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     right: 20,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 5,
@@ -306,8 +317,8 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     fontSize: 16,
-    color: '#222',
-    fontWeight: 'bold',
+    color: "#222",
+    fontWeight: "bold",
   },
   logoutItem: {
     // backgroundColor: '#990f02',
@@ -315,45 +326,45 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: 16,
-    color: '#b90e0a', //crimsom red
-    fontWeight: 'bold',
+    color: "#b90e0a", //crimsom red
+    fontWeight: "bold",
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background
   },
   modalContainer: {
-    width: Dimensions.get('window').width * 0.8, // Responsive width
-    backgroundColor: '#fff',
+    width: Dimensions.get("window").width * 0.8, // Responsive width
+    backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 10,
   },
   modalMessage: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   modalActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   cancelButton: {
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
@@ -361,17 +372,17 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
   },
   logoutButton: {
-    backgroundColor: '#d9534f',
+    backgroundColor: "#d9534f",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 8,
   },
   logoutButtonText: {
     fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
