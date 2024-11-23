@@ -1,23 +1,17 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons'; // Social media icons
-import { useRouter } from 'expo-router';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { FontAwesome, Ionicons } from "@expo/vector-icons"; // Social media icons
+import { useRouter } from "expo-router";
 
 export default function WelcomeScreen() {
   const router = useRouter();
-  
+
   return (
     <View style={styles.container}>
       {/* Logo and Title */}
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://your-logo-url-here.png' }} // Replace with your logo
+          source={{ uri: "https://your-logo-url-here.png" }} // Replace with your logo
           style={styles.logo}
         />
         <Text style={styles.title}>GreenQuest</Text>
@@ -26,10 +20,16 @@ export default function WelcomeScreen() {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.roundButton} onPress={() => router.push('/auth/sign-in')}>
+        <TouchableOpacity
+          style={styles.roundButton}
+          onPress={() => router.push("/auth/sign-in")}
+        >
           <Text style={styles.roundButtonText}>Sign in</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.roundButton} onPress={() => router.push('/auth/sign-up')}>
+        <TouchableOpacity
+          style={styles.roundButton}
+          onPress={() => router.push("/auth/sign-up")}
+        >
           <Text style={styles.roundButtonText}>Create Account</Text>
         </TouchableOpacity>
       </View>
@@ -53,12 +53,12 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    backgroundColor: '#EAF8E6', // Light green background
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    backgroundColor: "#EAF8E6", // Light green background
   },
   header: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   logo: {
     width: 100,
@@ -67,29 +67,29 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   tagline: {
     fontSize: 16,
-    color: '#000',
+    color: "#000",
     marginTop: 4,
   },
   buttonContainer: {
-    width: '80%',
-    alignItems: 'center',
+    width: "80%",
+    alignItems: "center",
   },
   roundButton: {
     width: 180,
     height: 50,
     borderRadius: 25, // Circular corners
-    backgroundColor: '#FFFFFF', // White background
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#FFFFFF", // White background
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 16,
     borderWidth: 2, // Green border
-    borderColor: '#2E7D32',
-    shadowColor: '#000', // Shadow effect
+    borderColor: "#2E7D32",
+    shadowColor: "#000", // Shadow effect
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -97,25 +97,25 @@ const styles = StyleSheet.create({
   },
   roundButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#2E7D32',
+    fontWeight: "bold",
+    color: "#2E7D32",
   },
   socialMediaContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '50%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "50%",
     marginTop: 12,
   },
   iconCircle: {
     width: 50,
     height: 50,
     borderRadius: 25, // Makes the background circular
-    backgroundColor: '#fff', // White background
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff", // White background
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1, // Green border
-    borderColor: '#2E7D32',
-    shadowColor: '#000',
+    borderColor: "#2E7D32",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
