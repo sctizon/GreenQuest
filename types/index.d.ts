@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { eventSchema } from "./schemas/event.schema";
 import { participantSchema } from "./schemas/participant.schema";
 import { userSchema } from "./schemas/user.schema";

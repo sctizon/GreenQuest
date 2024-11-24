@@ -1,6 +1,7 @@
 import { SignUpModal } from "@/components/SignUpModal";
+import { fetcher } from "@/utils/fetcher";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Image,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import useSWR from "swr";
 import { API_URL } from "../../../constants/constants";
 
 interface Event {
@@ -23,25 +25,13 @@ interface Event {
 
 export default function EventDetails() {
   const { id } = useLocalSearchParams(); // Dynamic route parameter
-  const [event, setEvent] = useState<Event | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch(`${API_URL}/events/${id}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch event");
-        return res.json();
-      })
-      .then((data) => {
-        setEvent(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [id]);
+  const {
+    data: event,
+    error,
+    isLoading,
+  } = useSWR<Event>(`${API_URL}/events/${id}`, fetcher);
 
   const handleSignUp = async (name: string, email: string, phone: string) => {
     try {
@@ -63,8 +53,8 @@ export default function EventDetails() {
     }
   };
 
-  if (loading) return <Text style={styles.loading}>Loading...</Text>;
-
+  if (isLoading) return <Text style={styles.loading}>Loading...</Text>;
+  if (error) return <Text style={styles.error}>An error occurred</Text>;
   if (!event) return <Text style={styles.error}>Event not found</Text>;
 
   return (

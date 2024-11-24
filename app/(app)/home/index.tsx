@@ -1,5 +1,7 @@
+import { Event } from "@/types";
+import { fetcher } from "@/utils/fetcher";
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
@@ -8,54 +10,20 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import useSWR from "swr";
 import { SignUpModal } from "../../../components/SignUpModal"; // Import the modal
 import { API_URL } from "../../../constants/constants";
-// import { useAuth } from '@/contexts/AuthContext';
-
-interface Participant {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-}
-
-interface Event {
-  id: number;
-  eventName: string;
-  location: string;
-  image: string;
-  dateTime: string;
-  maxSpots: number;
-  participants: Participant[];
-  creatorName: string;
-}
 
 export default function HomeTab() {
   const router = useRouter();
-  const [events, setEvents] = useState<Event[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
-  // const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        console.log("Fetching events...");
-        const response = await fetch(`${API_URL}/events`);
-        console.log("Response status:", response.status);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.statusText}`);
-        }
-        const data: Event[] = await response.json();
-        console.log("Fetched events data:", data);
-        setEvents(data);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
+  const {
+    data: events,
+    error,
+    isLoading,
+  } = useSWR<Event[]>(`${API_URL}/events`, fetcher);
 
   const openModal = (event: Event) => {
     console.log("opening modal");
@@ -94,13 +62,13 @@ export default function HomeTab() {
     }
   };
 
-  // if (!isAuthenticated) {
-  //   return router.replace('/') // Or redirect immediately
-  // }
+  if (isLoading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>GreenQuest</Text>
+
       <FlatList
         data={events}
         keyExtractor={(item) => item.id.toString()}
@@ -207,8 +175,9 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#FFFFFF", // White card background
-    borderRadius: 16, // Rounded corners
+    borderRadius: 8, // Rounded corners
     marginBottom: 16,
+    boxShadow: "0 2px 4px rgba(0, 0, 0.1, 0.1)", // Subtle shadow
     overflow: "hidden",
     shadowColor: "#000",
     shadowOpacity: 0.1,
